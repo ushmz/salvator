@@ -12,9 +12,21 @@ git clone https://github.com/ushmz/salvator
 
 ### 2. Place your task contents.
 
+#### Top page content
+
+You should place Markdown style document as `_contents/top/top.md`.
+
 #### Task descriptions
 
 You should place Markdown style task descriptions in `_contents/tasks/`.
+
+#### Enquete descriptions
+
+You should place Markdown style enquete descriptions in `_contents/enquetes/`.
+
+#### File format
+
+See [this help](./_contents/README.md) for more detailed format.
 
 #### Your search UIs
 
