@@ -84,3 +84,23 @@ export function getEnqueteBySlug(slug: string, fields: string[]) {
 
   return items;
 }
+
+export function getTopPageContent(fields: string[]) {
+  const fullPath = join(process.cwd(), "_contents/top/", "top.md");
+  const contents = fs.readFileSync(fullPath, "utf8");
+  const { data, content } = matter(contents);
+
+  const items: Items = {};
+
+  fields.forEach((field) => {
+    if (field === "content") {
+      items[field] = content;
+    }
+
+    if (data[field]) {
+      items[field] = data[field];
+    }
+  });
+
+  return items;
+}
