@@ -1,0 +1,32 @@
+.markdown {
+  @apply text-lg leading-relaxed;
+}
+
+.markdown p,
+.markdown ul,
+.markdown ol,
+.markdown blockquote {
+  @apply my-6;
+}
+
+.markdown blockquote {
+  @apply text-base italic;
+}
+
+.markdown h1 {
+  @apply mt-12 mb-4 text-4xl leading-snug;
+}
+
+.markdown h2 {
+  @apply mt-12 mb-4 text-3xl leading-snug;
+}
+
+.markdown h3 {
+  @apply mt-10 mb-4 text-2xl leading-snug;
+}
+
+.markdown li {
+  list-style-type: circle;
+  margin-left: 2rem;
+}
+
