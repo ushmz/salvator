@@ -1,0 +1,14 @@
+.card {
+  padding: 4rem;
+  background-color: white;
+  height: 10rem;
+  width: 18rem;
+  max-width: 380px;
+  border: black;
+  border-radius: 1rem;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.cardContent {
+  margin: auto;
+}
