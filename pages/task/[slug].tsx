@@ -1,5 +1,6 @@
 import Head from "next/head";
-import { getTaskByID } from "../../lib/api";
+import Link from "next/link";
+import { getTaskBySlug, getAllTaskPaths } from "../../lib/api";
 import markdownToHTML from "../../lib/markdownToHTML";
 import styles from "../../styles/Home.module.css";
 import markdownStyle from "../../styles/markdown.module.css";
@@ -8,6 +9,11 @@ type Props = {
   id: string;
   query?: string;
   title?: string;
+  step?: {
+    current: number;
+    max: number;
+  };
+  nextPath: string;
   content: string;
 };
 
@@ -26,6 +32,19 @@ const Task = (props: Props) => {
           </div>
         )}
         <div className={markdownStyle["markdown"]} dangerouslySetInnerHTML={{ __html: props.content }} />
+
+        <div className="mt-16">
+          <Link href={props.nextPath || "#"} as={props.nextPath || "#"}>
+            <a>
+              <button
+                type="submit"
+                className="h-[50px] w-[175px] bg-blue-500 hover:bg-blue-700 text-white px-2 rounded"
+              >
+                {false ? "Loader" : "次へ"}
+              </button>
+            </a>
+          </Link>
+        </div>
       </main>
     </div>
   );
@@ -35,19 +54,21 @@ export default Task;
 
 type Params = {
   params: {
-    id: number;
+    slug: string;
   };
 };
 
 export async function getStaticPaths() {
+  const tasks = getAllTaskPaths();
+  console.log(tasks);
   return {
-    paths: [{ params: { id: "1" } }, { params: { id: "2" } }, { params: { id: "3" } }],
+    paths: tasks,
     fallback: false,
   };
 }
 
 export async function getStaticProps({ params }: Params) {
-  const task = getTaskByID(params.id, ["id", "query", "title", "content"]);
+  const task = getTaskBySlug(params.slug, ["id", "query", "title", "nextPath", "content"]);
 
   const htmlContent = await markdownToHTML(task.content);
   return {
@@ -55,6 +76,7 @@ export async function getStaticProps({ params }: Params) {
       id: task.id,
       query: task.query,
       title: task.title,
+      nextPath: task.nextPath,
       content: htmlContent,
     },
   };

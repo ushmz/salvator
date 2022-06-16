@@ -33,8 +33,8 @@ export function getAllEnquetePaths() {
   });
 }
 
-export function getTaskByID(taskID: number, fields: string[]) {
-  const fullPath = join(taskDirectory, `${taskID}.md`);
+export function getTaskBySlug(slug: string, fields: string[]) {
+  const fullPath = join(taskDirectory, `${slug}.md`);
   const contents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(contents);
 
@@ -46,7 +46,7 @@ export function getTaskByID(taskID: number, fields: string[]) {
 
   fields.forEach((field) => {
     if (field === "id") {
-      items[field] = taskID.toString();
+      items[field] = slug.toString();
     }
 
     if (field === "content") {
