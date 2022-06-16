@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../db/salvator.db"
+}
+
+model Allocation {
+  id     Int @id @default(autoincrement())
+  taskID Int @map("task_id")
+  count  Int @default(0)
+
+  @@map("allocations")
+}
+
+model Condition {
+  id      Int      @id @default(autoincrement())
+  name    String
+  answers Answer[] @relation("answersToconditions")
+
+  @@map("conditions")
+}
+
+model Task {
+  id          Int        @id @default(autoincrement())
+  slug        String     @unique(map: "sqlite_autoindex_tasks_1")
+  contentPath String     @map("content_path")
+  logs_click  ClickLog[] @relation("logs_clickTotasks")
+
+  @@map("tasks")
+}
+
+model Answer {
+  id          Int       @id @default(autoincrement())
+  userID      Int       @map("user_id")
+  conditionID Int       @map("condition_id")
+  answer      String
+  reason      String
+  conditions  Condition @relation("answersToconditions", fields: [conditionID], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users       User      @relation(fields: [userID], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("answers")
+}
+
+model DwellTimeLog {
+  id     Int  @id @default(autoincrement())
+  userID Int  @map("user_id")
+  taskID Int  @map("task_id")
+  users  User @relation(fields: [userID], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("logs_dwell_time")
+}
+
+model User {
+  id              Int            @id @default(autoincrement())
+  externalID      String         @map("external_id")
+  answers         Answer[]
+  logs_click      ClickLog[]     @relation("logs_clickTousers")
+  logs_dwell_time DwellTimeLog[]
+
+  @@map("users")
+}
+
+model ClickLog {
+  id     Int  @id @default(autoincrement())
+  userID Int  @map("user_id")
+  taskID Int  @map("task_id")
+  pageID Int  @map("page_id")
+  pages  Page @relation(fields: [pageID], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tasks  Task @relation("logs_clickTotasks", fields: [taskID], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users  User @relation("logs_clickTousers", fields: [userID], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("logs_click")
+}
+
+model Page {
+  id         Int        @id @default(autoincrement())
+  title      String
+  URL        String
+  snippet    String
+  logs_click ClickLog[]
+
+  @@map("pages")
+}
