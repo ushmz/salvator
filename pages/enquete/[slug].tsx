@@ -9,6 +9,7 @@ type Props = {
   title: string;
   slug: string;
   url: string;
+  nextPath: string;
   content: string;
 };
 
@@ -29,7 +30,7 @@ const Enquete = (props: Props) => {
                 type="submit"
                 className="h-[50px] w-[175px] bg-blue-500 hover:bg-blue-700 text-white px-2 rounded"
               >
-                {false ? "Loader" : "タスクを開始する"}
+                {false ? "Loader" : "次へ"}
               </button>
             </a>
           </Link>
