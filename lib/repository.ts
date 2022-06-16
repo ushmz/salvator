@@ -2,6 +2,15 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+export async function addUser(externalID: string, code: string) {
+  await prisma.user.create({
+    data: {
+      externalID: externalID,
+      code: code,
+    },
+  });
+}
+
 type TaskParams = {
   slug: string;
   contentPath: string;

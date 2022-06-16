@@ -1,8 +1,10 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { ChangeEvent, useState } from "react";
 import { getTopPageContent } from "../lib/api";
 import markdownToHTML from "../lib/markdownToHTML";
+import { addUser } from "../lib/repository";
 import styles from "../styles/Home.module.css";
 import markdownStyle from "../styles/markdown.module.css";
 
@@ -13,6 +15,11 @@ type Props = {
 };
 
 const Home: NextPage<Props> = (props) => {
+  const [externalID, setExternalID] = useState<string>("");
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setExternalID(e.target.value);
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -41,6 +48,7 @@ const Home: NextPage<Props> = (props) => {
               className="block w-[360px] py-2 px-3 mt-1 border border-gray-400 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm sm:text-sm rounded-md"
               type="text"
               placeholder={`${props.csName}ID`}
+              onChange={handleChange}
             />
             <p className="invisible mt-2 text-sm text-pink-600 peer-invalid:visible">
               ユーザ名は半角英数字と記号 (-_) を用いて入力してください
@@ -49,6 +57,15 @@ const Home: NextPage<Props> = (props) => {
               <Link href={props.nextPath || "#"} as={props.nextPath || "#"}>
                 <a>
                   <button
+                    onClick={() => {
+                      fetch("/api/user", {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ externalID: externalID }),
+                      });
+                    }}
                     type="submit"
                     className="h-[50px] w-[175px] bg-blue-500 hover:bg-blue-700 text-white px-2 rounded"
                   >

@@ -56,6 +56,7 @@ model DwellTimeLog {
 model User {
   id              Int            @id @default(autoincrement())
   externalID      String         @map("external_id")
+  code            String
   answers         Answer[]
   logs_click      ClickLog[]     @relation("logs_clickTousers")
   logs_dwell_time DwellTimeLog[]
