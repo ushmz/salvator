@@ -5,9 +5,33 @@ function range(start: number, end: number) {
   for (let i = 0; i <= end - start; i++) {
     arr[i] = start + i;
   }
-  console.log(start, end, arr);
   return arr;
 }
+
+type StepProps = {
+  variant: "finished" | "current" | "unfinished";
+};
+
+const CircularStep = ({ variant }: StepProps) => {
+  if (variant === "finished") {
+    return (
+      <div className="w-6 h-6 bg-blue-500 rounded-full grid">
+        <Check className="mt-1 justify-self-center" color="white" size={18} />
+      </div>
+    );
+  } else if (variant === "current") {
+    return (
+      <div className="w-6 h-6 border-2 border-blue-500 rounded-full grid">
+        <div className="justify-self-center w-2 h-2 mt-1.5 bg-blue-500 rounded-full" />
+      </div>
+    );
+  }
+  return (
+    <div className="w-6 h-6 border-2 border-gray-400 rounded-full grid">
+      <div className="justify-self-center"></div>
+    </div>
+  );
+};
 
 type CircularStepsProps = {
   current: number;
@@ -46,31 +70,6 @@ const CircularSteps = ({ current, max }: CircularStepsProps) => {
           );
         }
       })}
-    </div>
-  );
-};
-
-type StepProps = {
-  variant: "finished" | "current" | "unfinished";
-};
-
-const CircularStep = ({ variant }: StepProps) => {
-  if (variant === "finished") {
-    return (
-      <div className="w-6 h-6 bg-blue-500 rounded-full grid">
-        <Check className="mt-1 justify-self-center" color="white" size={18} />
-      </div>
-    );
-  } else if (variant === "current") {
-    return (
-      <div className="w-6 h-6 border-2 border-blue-500 rounded-full grid">
-        <div className="justify-self-center w-2 h-2 mt-1.5 bg-blue-500 rounded-full" />
-      </div>
-    );
-  }
-  return (
-    <div className="w-6 h-6 border-2 border-gray-400 rounded-full grid">
-      <div className="justify-self-center"></div>
     </div>
   );
 };
