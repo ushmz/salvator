@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { addUser } from "../../lib/repository";
+import { addUser, allocateTask } from "../../lib/repository";
 
 const generateCompletionCode = (len: number) => {
   const lowerCharSet = "abcdedfghijklmnopqrst";
@@ -32,7 +32,6 @@ const generateCompletionCode = (len: number) => {
 };
 
 export default async function registerUser(req: NextApiRequest, res: NextApiResponse) {
-  console.log("koko");
   if (req.method !== "POST") {
     res.status(400).json({ msg: "Invalid request" });
     return;
@@ -45,6 +44,7 @@ export default async function registerUser(req: NextApiRequest, res: NextApiResp
 
   const code = generateCompletionCode(8);
   await addUser(req.body.externalID, code);
-  res.status(201).end();
+  const tasks = await allocateTask(2);
+  res.status(201).json({ tasks: tasks });
   return;
 }

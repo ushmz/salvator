@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ChangeEvent, useState } from "react";
 import { getTopPageContent } from "../lib/api";
 import markdownToHTML from "../lib/markdownToHTML";
-import { addUser } from "../lib/repository";
+import { setAssignedTasks } from "../lib/storage";
 import styles from "../styles/Home.module.css";
 import markdownStyle from "../styles/markdown.module.css";
 
@@ -64,7 +64,11 @@ const Home: NextPage<Props> = (props) => {
                           "Content-Type": "application/json",
                         },
                         body: JSON.stringify({ externalID: externalID }),
-                      });
+                      })
+                        .then((r) => r.json())
+                        .then((d) => {
+                          setAssignedTasks(d["tasks"]);
+                        });
                     }}
                     type="submit"
                     className="h-[50px] w-[175px] bg-blue-500 hover:bg-blue-700 text-white px-2 rounded"
