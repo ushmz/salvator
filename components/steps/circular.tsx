@@ -12,7 +12,7 @@ type StepProps = {
   variant: "finished" | "current" | "unfinished";
 };
 
-const CircularStep = ({ variant }: StepProps) => {
+export const CircularStep = ({ variant }: StepProps) => {
   if (variant === "finished") {
     return (
       <div className="w-6 h-6 bg-blue-500 rounded-full grid">
